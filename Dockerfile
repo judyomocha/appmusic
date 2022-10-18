@@ -26,6 +26,7 @@ COPY requirements.txt ./
 # Install dependencies.
 RUN pip install -U "discord.py"
 RUN pip install -r requirements.txt
+RUN pip3 install python-dotenv
 
 # Copy local code to the container image.
 COPY . ./
