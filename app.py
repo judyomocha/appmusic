@@ -30,7 +30,6 @@ import requests
 from bs4 import BeautifulSoup
 
 import commands
-import settings
 from dotenv import load_dotenv
 load_dotenv()
 TOKEN = os.environ['TOKEN']
@@ -199,41 +198,6 @@ async def on_message(message):
             await message.channel.send(msg)
         else:
             await message.channel.send("静かだねぇ〜")
-
-
-    if message.content.startswith('/profile'):
-        key = message.content.split(" ",1)
-        data = ('%'+key[1]+'%', '%'+key[1]+'%')
-        sql = "SELECT * FROM idol where name like %s or kana like %s"
-        # データベースへの接続とカーソルの生成
-        DB = settings.DB
-        connection = MySQLdb.connect(
-            host=DB["host"],
-            user=DB["user"],
-            passwd=DB["pass"],
-            db=DB["db"],
-        # テーブル内部で日本語を扱うために追加
-            charset='utf8'
-        )
-        cursor = connection.cursor(MySQLdb.cursors.DictCursor)
-        # 一覧の表示
-        cursor.execute(sql,data)
-        rows = cursor.fetchall()
-        if len(rows) == 0:
-            await message.channel.send("その名前の子はいないよ〜")
-        for row in rows:
-            await message.channel.send(row['name']+"さんのプロフィールはこちら！")
-            await message.channel.send(
-                "名前："+row['name']+"（"+row['kana']+"）\n"+
-                "年齢："+str(row['age'])+"\t誕生日："+row['birthday']+"\t星座："+row['constellation']+"\n"+
-                "身長："+str(row['height'])+"cm\t体重："+str(row['weight'])+"kg\n"+
-                "スリーサイズ："+str(row['B'])+"/"+str(row['W'])+"/"+str(row['H'])+"\n"+
-                "血液型："+row['blood']+"\t利き手："+row['handed']+"\n"+
-                "出身："+row['hometown']+"\n"+
-                "趣味："+row['hobby']+"\n"+
-                "特技："+row['talent']+"\n"+
-                "CV："+row['cv'])
-            # print(row)
 
 
     # ex) /search 3 <keyword>、/search <keyword>
