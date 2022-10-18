@@ -37,7 +37,6 @@ CLOUD_CREDENTIALS_SECRET = os.environ['CLOUD_CREDENTIALS_SECRET']
 
 # -------------google drive 認証-------------------------------------------------
 import json
-import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 
 def get_cred_config() -> Dict[str, str]:
