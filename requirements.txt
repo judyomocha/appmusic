@@ -15,11 +15,11 @@ cffi==1.14.1
 chardet==3.0.4
 discord==1.0.1
 discord.py==1.4.0
-google-api-core==1.22.0
-google-api-python-client==1.10.0
-google-auth-httplib2==0.0.4
-google-auth-oauthlib==0.4.1
-googleapis-common-protos==1.52.0
+google-api-core
+google-api-python-client
+google-auth-httplib2
+google-auth-oauthlib
+googleapis-common-protos
 httplib2==0.18.1
 idna==2.10
 multidict==4.7.6
