@@ -96,7 +96,7 @@ key = get_cred_config()
 scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
 credentials = ServiceAccountCredentials.from_json_keyfile_dict(key, scope)
 
-
+service = build('drive', 'v3', credentials=credentials)
 # --------------------------------------------------------------------------------
 
 
