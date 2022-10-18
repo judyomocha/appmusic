@@ -86,6 +86,7 @@ async def on_message(message):
 
 
     if message.content.startswith('/play'):
+        voiceChannel = await VoiceChannel.connect(message.author.voice.channel)
         voice_channel = client.get_channel(message.guild.voice_channels[0].id)
         voice_client = message.guild.voice_client
 
