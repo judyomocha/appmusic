@@ -57,7 +57,7 @@ else:
     signal.signal(signal.SIGTERM, shutdown_handler)
     
     
-from __future__ import print_function
+
 import os
 import os.path
 import io
@@ -332,7 +332,7 @@ async def on_message(message):
 
 
     if message.content == '/help':
-        msg = "柚の使い方はこちら♪\n"
+        msg = "MUSICの使い方はこちら♪\n"
         for i in commands.commands.items():
             msg += "`"+i[0]+"` : "+i[1]+"\n"
         await message.channel.send(msg)
