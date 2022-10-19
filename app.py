@@ -78,7 +78,7 @@ async def on_ready():
 # メッセージ受信時に動作する処理
 @client.event
 async def on_message(message):
-    global voice
+    global voiceChannel
     # メッセージ送信者がBotだった場合は無視する
     if message.author.bot:
         return
