@@ -119,6 +119,7 @@ async def on_message(message):
                 voice = await voice_channel.connect()
             # 再生中、一時停止中はキューに入れる
             if audio_queue.empty() and not voice.is_playing() and not voice.is_paused():
+                voice = await voice_channel.connect()
                 await message.channel.send("**"+data['title']+"**を再生するよー♪")
                 message.guild.voice_client.play(audio_source,after=check_queue)
             else:
