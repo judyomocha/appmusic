@@ -60,7 +60,7 @@ service = build('drive', 'v3', credentials=credentials)
 # --------------------------------------------------------------------------------
 
 
-voice = None
+VoiceChannel = None
 audio_queue = queue.Queue()
 audiofile_list = []
 # 再生キューに曲があるか確認
@@ -69,7 +69,7 @@ def check_queue(e):
     try:
         if not audio_queue.empty():
             audio_source = audio_queue.get()
-            voice.play(audio_source,after=check_queue)
+            message.guild.voice_client.play(audio_source,after=check_queue)
     except:
         print(e)
 
@@ -82,7 +82,7 @@ async def on_ready():
 # メッセージ受信時に動作する処理
 @client.event
 async def on_message(message):
-    global voice
+    global voiceChannel
     # メッセージ送信者がBotだった場合は無視する
     if message.author.bot:
         return
@@ -108,17 +108,21 @@ async def on_message(message):
             }
             ydl = youtube_dl.YoutubeDL(ydl_opts)
             data = ydl.extract_info(url, download=False)
-            filename = data['title'] + ".mp3"
+            filename = data['title'] + ".mp4"
 
             if not os.path.exists(filename):
                 await message.channel.send("ダウンロードしてくるからちょっと待ってて！")
                 loop = asyncio.get_event_loop()
                 data = await loop.run_in_executor(None, lambda: ydl.extract_info(url, download=True))
-            
-            audio_source = discord.FFmpegPCMAudio(filename)
-            audiofile_list.append(filename)
-            if not voice: #ボイチャ接続
-                voice = await voice_channel.connect()
+                #加工を追加
+                stream = ffmpeg.input(filename)
+                stream = ffmpeg.output(stream, "output.wav")
+                source = ffmpeg-normalize stream output.wav
+                #加工ここまで
+                audio_source = discord.FFmpegPCMAudio(source)
+                audiofile_list.append(filename)
+            if not voiceChannel: #ボイチャ接続
+                voiceChannel = await VoiceChannel.connect(message.author.voice.channel)
             # 再生中、一時停止中はキューに入れる
             if audio_queue.empty() and not voice.is_playing() and not voice.is_paused():
                 await message.channel.send("**"+data['title']+"**を再生するよー♪")
@@ -144,15 +148,19 @@ async def on_message(message):
                     while done is False:
                         status, done = downloader.next_chunk()
                         print ("Download %d%%." % int(status.progress() * 100))
-
-                audio_source = discord.FFmpegPCMAudio(filename)
+                #加工を追加
+                stream = ffmpeg.input(filename)
+                stream = ffmpeg.output(stream, "output.wav")
+                source = ffmpeg-normalize stream output.wav
+                #加工ここまで
+                audio_source = discord.FFmpegPCMAudio(source)
                 audiofile_list.append(filename)
-                if not voice: #ボイチャ接続
-                    voice = await voice_channel.connect()
+                if not VoiceChannel: #ボイチャ接続
+                    voiceChannel = await VoiceChannel.connect(message.author.voice.channel)
                 # 再生中、一時停止中はキューに入れる
                 if audio_queue.empty() and not voice.is_playing() and not voice.is_paused():
                     await message.channel.send("**"+filename+"**を再生するよー♪")
-                    voice.play(audio_source,after=check_queue)
+                    message.guild.voice_client.play(audio_source,after=check_queue)
                 else:
                     await message.channel.send("**"+filename+"**を再生リストに入れておくね！")
                     audio_queue.put(audio_source)
