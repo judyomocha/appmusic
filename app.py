@@ -113,11 +113,7 @@ async def on_message(message):
                 await message.channel.send("ダウンロードしてくるからちょっと待ってて！")
                 loop = asyncio.get_event_loop()
                 data = await loop.run_in_executor(None, lambda: ydl.extract_info(url, download=True))
-                #加工を追加
-                stream = discord.FFmpegPCMAudio.input(filename)
-                source = discord.FFmpegPCMAudio.output(stream, "output.wav")
-                #加工ここまで
-                audio_source = discord.FFmpegPCMAudio(source)
+                audio_source = discord.FFmpegPCMAudio(filename)
                 audiofile_list.append(filename)
             if not voiceChannel: #ボイチャ接続
                 voiceChannel = await VoiceChannel.connect(message.author.voice.channel)
@@ -146,11 +142,7 @@ async def on_message(message):
                     while done is False:
                         status, done = downloader.next_chunk()
                         print ("Download %d%%." % int(status.progress() * 100))
-                #加工を追加
-                stream = discord.FFmpegPCMAudio.input(filename)
-                source = discord.FFmpegPCMAudio.output(stream, "output.wav")
-                #加工ここまで
-                audio_source = discord.FFmpegPCMAudio(source)
+                audio_source = discord.FFmpegPCMAudio(filename)
                 audiofile_list.append(filename)
                 if not VoiceChannel: #ボイチャ接続
                     voiceChannel = await VoiceChannel.connect(message.author.voice.channel)
