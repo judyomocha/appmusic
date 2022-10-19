@@ -24,6 +24,10 @@ from googleapiclient.http import MediaIoBaseDownload
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 import discord
+from discord import Intents
+from apiclient.discovery import build
+from discord.player import FFmpegPCMAudio
+from discord.channel import VoiceChannel
 import youtube_dl
 import MySQLdb
 import requests
