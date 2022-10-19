@@ -116,8 +116,7 @@ async def on_message(message):
                 data = await loop.run_in_executor(None, lambda: ydl.extract_info(url, download=True))
                 #加工を追加
                 stream = ffmpeg.input(filename)
-                stream = ffmpeg.output(stream, "output.wav")
-                source = ffmpeg-normalize stream output.wav
+                source = ffmpeg.output(stream, "output.wav")
                 #加工ここまで
                 audio_source = discord.FFmpegPCMAudio(source)
                 audiofile_list.append(filename)
@@ -150,8 +149,7 @@ async def on_message(message):
                         print ("Download %d%%." % int(status.progress() * 100))
                 #加工を追加
                 stream = ffmpeg.input(filename)
-                stream = ffmpeg.output(stream, "output.wav")
-                source = ffmpeg-normalize stream output.wav
+                source = ffmpeg.output(stream, "output.wav")
                 #加工ここまで
                 audio_source = discord.FFmpegPCMAudio(source)
                 audiofile_list.append(filename)
