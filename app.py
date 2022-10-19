@@ -110,6 +110,7 @@ async def on_message(message):
             filename = data['title'] + ".mp4"
 
             if not os.path.exists(filename):
+                voice = await voice_channel.connect()
                 await message.channel.send("ダウンロードしてくるからちょっと待ってて！")
                 loop = asyncio.get_event_loop()
                 data = await loop.run_in_executor(None, lambda: ydl.extract_info(url, download=True))
