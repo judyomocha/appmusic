@@ -35,6 +35,10 @@ load_dotenv()
 TOKEN = os.environ['TOKEN']
 CLOUD_CREDENTIALS_SECRET = os.environ['CLOUD_CREDENTIALS_SECRET']
 
+intents: Intents = discord.Intents.all()
+client = discord.Client(intents=intents)
+voiceChannel: VoiceChannel 
+
 # -------------google drive 認証-------------------------------------------------
 import json
 from oauth2client.service_account import ServiceAccountCredentials
@@ -51,11 +55,6 @@ credentials = ServiceAccountCredentials.from_json_keyfile_dict(key, scope)
 service = build('drive', 'v3', credentials=credentials)
 # --------------------------------------------------------------------------------
 
-
-# 自分のBotのアクセストークンに置き換えてください
-
-# 接続に必要なオブジェクトを生成
-client = discord.Client()
 
 voice = None
 audio_queue = queue.Queue()
