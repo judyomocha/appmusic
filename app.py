@@ -81,7 +81,7 @@ async def on_ready():
 # メッセージ受信時に動作する処理
 @client.event
 async def on_message(message):
-    global voiceChannel
+    global voice
     # メッセージ送信者がBotだった場合は無視する
     if message.author.bot:
         return
@@ -115,8 +115,8 @@ async def on_message(message):
                 data = await loop.run_in_executor(None, lambda: ydl.extract_info(url, download=True))
                 audio_source = discord.FFmpegPCMAudio(filename)
                 audiofile_list.append(filename)
-            if not voiceChannel: #ボイチャ接続
-                voiceChannel = await VoiceChannel.connect(message.author.voice.channel)
+            if not voice: #ボイチャ接続
+                await voice.connect(message.author.voice.channel)
             # 再生中、一時停止中はキューに入れる
             if audio_queue.empty() and not voice.is_playing() and not voice.is_paused():
                 await message.channel.send("**"+data['title']+"**を再生するよー♪")
@@ -144,8 +144,8 @@ async def on_message(message):
                         print ("Download %d%%." % int(status.progress() * 100))
                 audio_source = discord.FFmpegPCMAudio(filename)
                 audiofile_list.append(filename)
-                if not VoiceChannel: #ボイチャ接続
-                    voiceChannel = await VoiceChannel.connect(message.author.voice.channel)
+                if not Voice: #ボイチャ接続
+                    await voice.connect(message.author.voice.channel)
                 # 再生中、一時停止中はキューに入れる
                 if audio_queue.empty() and not voice.is_playing() and not voice.is_paused():
                     await message.channel.send("**"+filename+"**を再生するよー♪")
