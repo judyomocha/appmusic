@@ -17,7 +17,6 @@ import os.path
 import io
 import queue
 import asyncio
-import ffmpeg
 import pickle
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaIoBaseDownload
@@ -115,8 +114,8 @@ async def on_message(message):
                 loop = asyncio.get_event_loop()
                 data = await loop.run_in_executor(None, lambda: ydl.extract_info(url, download=True))
                 #加工を追加
-                stream = ffmpeg.input(filename)
-                source = ffmpeg.output(stream, "output.wav")
+                stream = discord.FFmpegPCMAudio.input(filename)
+                source = discord.FFmpegPCMAudio.output(stream, "output.wav")
                 #加工ここまで
                 audio_source = discord.FFmpegPCMAudio(source)
                 audiofile_list.append(filename)
@@ -148,8 +147,8 @@ async def on_message(message):
                         status, done = downloader.next_chunk()
                         print ("Download %d%%." % int(status.progress() * 100))
                 #加工を追加
-                stream = ffmpeg.input(filename)
-                source = ffmpeg.output(stream, "output.wav")
+                stream = discord.FFmpegPCMAudio.input(filename)
+                source = discord.FFmpegPCMAudio.output(stream, "output.wav")
                 #加工ここまで
                 audio_source = discord.FFmpegPCMAudio(source)
                 audiofile_list.append(filename)
