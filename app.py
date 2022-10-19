@@ -82,14 +82,13 @@ async def on_ready():
 # メッセージ受信時に動作する処理
 @client.event
 async def on_message(message):
-    global voiceChannel
+    global voice
     # メッセージ送信者がBotだった場合は無視する
     if message.author.bot:
         return
 
 
     if message.content.startswith('/play'):
-        voiceChannel = await VoiceChannel.connect(message.author.voice.channel)
         voice_channel = client.get_channel(message.guild.voice_channels[0].id)
         voice_client = message.guild.voice_client
 
