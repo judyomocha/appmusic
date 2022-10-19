@@ -59,7 +59,7 @@ service = build('drive', 'v3', credentials=credentials)
 # --------------------------------------------------------------------------------
 
 
-VoiceChannel = None
+voice = None
 audio_queue = queue.Queue()
 audiofile_list = []
 # 再生キューに曲があるか確認
@@ -116,7 +116,7 @@ async def on_message(message):
                 audio_source = discord.FFmpegPCMAudio(filename)
                 audiofile_list.append(filename)
             if not voice: #ボイチャ接続
-                await voice_client.connect(message.author.voice.channel)
+                voice = await voice_channel.connect()
             # 再生中、一時停止中はキューに入れる
             if audio_queue.empty() and not voice.is_playing() and not voice.is_paused():
                 await message.channel.send("**"+data['title']+"**を再生するよー♪")
@@ -145,7 +145,7 @@ async def on_message(message):
                 audio_source = discord.FFmpegPCMAudio(filename)
                 audiofile_list.append(filename)
                 if not voice: #ボイチャ接続
-                    await voice_client.connect(message.author.voice.channel)
+                    voice = await voice_channel.connect()
                 # 再生中、一時停止中はキューに入れる
                 if audio_queue.empty() and not voice.is_playing() and not voice.is_paused():
                     await message.channel.send("**"+filename+"**を再生するよー♪")
